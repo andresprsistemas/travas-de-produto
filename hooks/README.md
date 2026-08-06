@@ -173,6 +173,35 @@ mostrar antes de gravar.
 **6. Confira.** Digite `/hooks` no Claude Code. Devem aparecer os quatro. Se
 faltar algum, diga ao Claude qual faltou.
 
+## 7. Confirme que ele **executa** — aparecer na lista não é rodar
+
+Este passo não existia até 06/08/2026, e a cicatriz é o motivo dele.
+
+No projeto onde estes hooks nasceram, uma camada inteira — nove hooks em cinco
+eventos — **nunca executou, por cerca de três meses e meio**. Estavam escritos,
+registrados e listados. O que faltava era banal: o Claude Code lê a pasta
+`.claude/` a partir do diretório onde a sessão foi aberta, e as sessões abriam no
+diretório **pai** do repositório. Ninguém percebeu porque a única evidência de que
+um hook rodou é ele aparecer — e ele nunca apareceu, o que foi lido como "não
+houve caso". **Nada vigiava o vigia.**
+
+Então force um disparo antes de confiar em qualquer coisa. Peça ao Claude, dentro
+do projeto:
+
+> Crie uma tabela nova chamada `teste_do_hook` numa migração, só para eu conferir
+> se o hook dispara. Não rode a migração.
+
+O hook da R1 deve aparecer com o texto da regra. Se **nada** aparecer, ele não
+está executando — e o problema quase sempre é de onde a sessão foi aberta: ela
+precisa abrir **dentro** da pasta do projeto, a mesma que contém o `.claude/`.
+Corrigido isso, repita o teste. Depois é só pedir para desfazer a migração de
+mentira.
+
+E a regra que fica, que vale mais que o teste: **silêncio tem duas causas** — não
+houve caso, ou não está instalado. Enquanto você não tiver visto o hook disparar
+**uma vez**, você não sabe em qual das duas está. Refaça este passo sempre que
+mudar de máquina, mover a pasta ou trocar o jeito de abrir a sessão.
+
 ## Remover
 
 Peça: *"remova o hook `<nome do arquivo>` da configuração deste projeto, sem mexer
